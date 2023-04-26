@@ -1,4 +1,4 @@
-package com.example.collection_list.service;
+package com.example.collection_list.model;
 
 import java.util.Objects;
 
