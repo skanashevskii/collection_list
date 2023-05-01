@@ -1,8 +1,7 @@
 package com.example.collection_list.part2.list_map_set;
 
 import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
+
 
 
 //Задание 1.
@@ -22,6 +21,7 @@ public class Set_Map {
         System.out.println("==============");
         printUniqWords2();
         System.out.println("==============");
+
         printCountWords();
         System.out.println("==============");
 
@@ -61,6 +61,7 @@ public class Set_Map {
     public static void printCountWords() {
         Map<String,Integer> map =new LinkedHashMap<>();
         for (String word : words2) {
+
            if(!map.containsKey(word)){
                 map.put(word, 0);
             }
@@ -69,6 +70,7 @@ public class Set_Map {
             }
         }
         System.out.println(map.values());
+        //Безобидный коментарий \u000a System.out.println("Bugaga");
     }
 
 

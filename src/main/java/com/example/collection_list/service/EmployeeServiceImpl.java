@@ -16,7 +16,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final List<Employee> employeeList;
 
     public EmployeeServiceImpl() {
-        this.employeeList = new ArrayList<>();
+        this.employeeList = new ArrayList<>(sizeArray);
     }
 
     @Override
