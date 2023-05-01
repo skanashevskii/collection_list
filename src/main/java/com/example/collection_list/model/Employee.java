@@ -27,6 +27,10 @@ public class Employee {
         return this.name;
     }
 
+    public String getFullName(){
+        return this.family+" "+this.name;
+    }
+
 
     @Override
     public boolean equals(Object o) {
