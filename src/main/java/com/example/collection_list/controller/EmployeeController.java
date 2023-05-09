@@ -1,8 +1,5 @@
 package com.example.collection_list.controller;
 
-import com.example.collection_list.exceptions.EmployeeAlreadyAddedException;
-import com.example.collection_list.exceptions.EmployeeNotFoundException;
-import com.example.collection_list.exceptions.EmployeeStorageIsFullException;
 import com.example.collection_list.model.Employee;
 import com.example.collection_list.service.EmployeeService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -38,7 +36,7 @@ public class EmployeeController {
         }
 
         @GetMapping
-        public List<Employee> getAllList () {
+        public Collection<Employee> findAll () {
             return employeeService.findAll();
         }
     }
