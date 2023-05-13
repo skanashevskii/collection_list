@@ -10,41 +10,41 @@ import java.util.*;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
-    public final static int sizeArray = 3;
-    private final Map<String,Employee> employees;
+    public final static int sizeArray = 10;
+    private final Map<String, Employee> employees;
 
     public EmployeeServiceImpl() {
         this.employees = new HashMap<>(sizeArray);
     }
 
     @Override
-    public Employee addEmployee(String family, String name) throws EmployeeAlreadyAddedException, EmployeeStorageIsFullException {
-        Employee employee = new Employee(family, name);
+    public Employee addEmployee(String family, String name, int salary, int department) throws EmployeeAlreadyAddedException, EmployeeStorageIsFullException {
+        Employee employee = new Employee(family, name, salary, department);
         if (employees.size() >= sizeArray) {
             throw new EmployeeStorageIsFullException(" Массив переполнен " + employees.size());
         }
         if (employees.containsKey(employee.getFullName())) {
             throw new EmployeeAlreadyAddedException("Сотрудник " + employee + " уже существует");
         }
-        employees.put(employee.getFullName(),employee);
+        employees.put(employee.getFullName(), employee);
         return employee;
     }
 
     @Override
     public Employee deleteEmployee(String family, String name) throws EmployeeNotFoundException {
-        Employee employee = new Employee(family,name);
-            if (employees.containsKey(employee.getFullName())) {
-                employees.remove(employee.getFullName());
-                return employee;
-            }
+        Employee employee = new Employee(family, name, 0, 0);
+        if (employees.containsKey(employee.getFullName())) {
+            employees.remove(employee.getFullName());
+            return employee;
+        }
         throw new EmployeeNotFoundException("Сотрудник " + family + " " + name + " не найден");
     }
 
     @Override
     public Employee findEmployee(String family, String name) throws EmployeeNotFoundException {
-        Employee employee = new Employee(family,name);
-            if (employees.containsKey(employee.getFullName())) {
-                return employees.get(employee.getFullName());
+        Employee employee = new Employee(family, name, 0, 0);
+        if (employees.containsKey(employee.getFullName())) {
+            return employees.get(employee.getFullName());
         }
         throw new EmployeeNotFoundException("Сотрудник " + family + " " + name + " " + " не найден");
     }
