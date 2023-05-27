@@ -37,7 +37,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public Employee deleteEmployee(String family, String name) throws EmployeeNotFoundException {
         validateInput(family,name);
-        String key = getKey(family, name);
+        String key = getKey(family, name).toLowerCase();
         if (employees.containsKey(key)) {
             return employees.remove(key);
 
@@ -48,7 +48,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public Employee findEmployee(String family, String name) throws EmployeeNotFoundException{
         validateInput(family,name);
-        String key = getKey(family, name);
+        String key = getKey(family, name).toLowerCase();
         if (employees.containsKey(key)) {
             return employees.get(key);
         }
@@ -61,13 +61,21 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     private String getKey(String family, String name) {
-        return (family + " " + name);
+        return family + " " + name;
     }
 
     private void validateInput(String family,String name){
         if (!(StringUtils.isAlpha(family) && StringUtils.isAlpha(name))){
             throw new InvalidInputException();
-        };
+        }
+    }
+    //2 й вариант
+    private void checkArg(String... args){
+        for (String arg : args){
+            if(!StringUtils.isAlpha(arg)){
+                throw new InvalidInputException();
+            }
+        }
     }
 }
 

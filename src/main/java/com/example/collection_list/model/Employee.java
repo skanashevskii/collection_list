@@ -17,15 +17,6 @@ public class Employee {
         this.department = department;
     }
 
-/*
-    @Override
-    public String toString() {
-        return " Фамилия: "
-                + this.family + " Имя: " + this.name;
-
-    }
-*/
-
     @Override
     public String toString() {
         return "Employee{" +
