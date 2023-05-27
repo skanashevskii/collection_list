@@ -1,5 +1,7 @@
 package com.example.collection_list.model;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.Objects;
 
 public class Employee {
@@ -9,20 +11,11 @@ public class Employee {
     private final int department;
 
     public Employee(String family, String name, int salary, int department) {
-        this.family = family;
-        this.name = name;
+        this.family = StringUtils.capitalize(family.toLowerCase());
+        this.name = StringUtils.capitalize(name.toLowerCase());
         this.salary = salary;
         this.department = department;
     }
-
-/*
-    @Override
-    public String toString() {
-        return " Фамилия: "
-                + this.family + " Имя: " + this.name;
-
-    }
-*/
 
     @Override
     public String toString() {
@@ -43,7 +36,7 @@ public class Employee {
     }
 
     public String getFullName() {
-        return (this.family + " " + this.name).toLowerCase();
+        return this.family + " " + this.name;
     }
 
     public int getSalary() {
