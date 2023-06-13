@@ -2,10 +2,7 @@ package com.example.collection_list.controller;
 
 import com.example.collection_list.model.Employee;
 import com.example.collection_list.service.DepartmentServiceImpl;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 import java.util.Collection;
@@ -22,18 +19,23 @@ public class DepartmentController {
     }
 
 
-    @GetMapping("/max-salary")
-    public Employee max(@RequestParam int departmentId) {
+    @GetMapping("/{departmentId}/salary/max")
+    public Employee max(@PathVariable int departmentId) {
         return departmentServiceImpl.max(departmentId);
     }
 
-    @GetMapping("/min-salary")
-    public Employee min(@RequestParam int departmentId) {
+    @GetMapping("/{departmentId}/salary/min")
+    public Employee min(@PathVariable int departmentId) {
         return departmentServiceImpl.min(departmentId);
     }
+    @GetMapping("/{departmentId}/salary/sum")
+    public int sum(@PathVariable int departmentId) {
+        return departmentServiceImpl.sumSalaryDept(departmentId);
+    }
 
-    @GetMapping(value = "/all", params = "departmentId")
-    public Collection<Employee> allDept(@RequestParam int departmentId) {
+
+    @GetMapping( "/{departmentId}/employees")
+    public Collection<Employee> allDept(@PathVariable int departmentId) {
         return departmentServiceImpl.allDept(departmentId);
     }
 

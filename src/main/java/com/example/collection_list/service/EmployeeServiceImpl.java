@@ -12,7 +12,7 @@ import java.util.*;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
-    public final static int sizeArray = 10;
+    public static int sizeArray = 10;
     private final Map<String, Employee> employees;
 
     public EmployeeServiceImpl() {
@@ -22,7 +22,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public Employee addEmployee(String family, String name, int salary, int department)
             throws EmployeeAlreadyAddedException, EmployeeStorageIsFullException {
-        validateInput(family,name);
+        validateInput(family, name);
         Employee employee = new Employee(family, name, salary, department);
         if (employees.size() >= sizeArray) {
             throw new EmployeeStorageIsFullException(" Массив переполнен " + employees.size());
@@ -36,7 +36,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee deleteEmployee(String family, String name) throws EmployeeNotFoundException {
-        validateInput(family,name);
+        validateInput(family, name);
         String key = getKey(family, name).toLowerCase();
         if (employees.containsKey(key)) {
             return employees.remove(key);
@@ -46,8 +46,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Employee findEmployee(String family, String name) throws EmployeeNotFoundException{
-        validateInput(family,name);
+    public Employee findEmployee(String family, String name) throws EmployeeNotFoundException {
+        validateInput(family, name);
         String key = getKey(family, name).toLowerCase();
         if (employees.containsKey(key)) {
             return employees.get(key);
@@ -60,19 +60,20 @@ public class EmployeeServiceImpl implements EmployeeService {
         return Collections.unmodifiableCollection(employees.values());//для безопасности передаем копию
     }
 
-    private String getKey(String family, String name) {
+    public String getKey(String family, String name) {
         return family + " " + name;
     }
 
-    private void validateInput(String family,String name){
-        if (!(StringUtils.isAlpha(family) && StringUtils.isAlpha(name))){
+    private void validateInput(String family, String name) {
+        if (!(StringUtils.isAlpha(family) && StringUtils.isAlpha(name))) {
             throw new InvalidInputException();
         }
     }
+
     //2 й вариант
-    private void checkArg(String... args){
-        for (String arg : args){
-            if(!StringUtils.isAlpha(arg)){
+    private void checkArg(String... args) {
+        for (String arg : args) {
+            if (!StringUtils.isAlpha(arg)) {
                 throw new InvalidInputException();
             }
         }

@@ -19,4 +19,5 @@ public interface EmployeeService {
     Collection<Employee> findAll();
 
 
+    String getKey(String family, String name);
 }

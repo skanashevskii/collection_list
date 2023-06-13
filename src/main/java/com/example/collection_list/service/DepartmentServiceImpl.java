@@ -35,6 +35,13 @@ public class DepartmentServiceImpl implements DepartmentService {
                 .min(Comparator.comparing(Employee::getSalary))
                 .orElse(null);
     }
+    @Override
+    public int sumSalaryDept(int dept) {
+        return employeeService.findAll()
+                .stream()
+                .filter(employee -> employee.getDepartment() == dept)
+                .mapToInt(Employee::getSalary).sum();
+    }
 
     @Override
     public Collection<Employee> allDept(int dept) {
