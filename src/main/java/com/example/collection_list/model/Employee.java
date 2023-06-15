@@ -36,7 +36,7 @@ public class Employee {
     }
 
     public String getFullName() {
-        return this.family + " " + this.name;
+        return (this.family + " " + this.name).toLowerCase();
     }
 
     public int getSalary() {

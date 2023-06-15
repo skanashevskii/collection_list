@@ -7,8 +7,14 @@ import com.example.collection_list.model.Employee;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.Collection;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 
 class EmployeeServiceImplTest {
@@ -20,26 +26,25 @@ class EmployeeServiceImplTest {
         employeeService = new EmployeeServiceImpl();
     }
 
-    @Test
-    public void addEmployee() throws EmployeeAlreadyAddedException, EmployeeStorageIsFullException {
-        String family = "Ivanov";
-        String name = "Ivan";
-        int salary = 10000;
-        int department = 1;
+    @ParameterizedTest
+    @MethodSource("parametrs")
+    public void addEmployee(String family, String name, int salary, int department)
+            throws EmployeeAlreadyAddedException, EmployeeStorageIsFullException {
 
         Employee addedEmployee = employeeService.addEmployee(family, name, salary, department);
 
-        Assertions.assertEquals(family + " " + name, addedEmployee.getFullName());
-        Assertions.assertEquals(salary, addedEmployee.getSalary());
-        Assertions.assertEquals(department, addedEmployee.getDepartment());
+        /**  Импорт статик(import static org.junit.jupiter.api.Assertions.assertEquals;)
+         метода позволяет сократить код Assertions.assertEquals -> assertEquals*/
+
+        assertEquals((family + " " + name).toLowerCase(), addedEmployee.getFullName());
+        assertEquals(salary, addedEmployee.getSalary());
+        assertEquals(department, addedEmployee.getDepartment());
     }
 
-    @Test
-    public void testAddEmployee_ThrowsEmployeeAlreadyAddedException() throws EmployeeStorageIsFullException {
-        String family = "Ivanov";
-        String name = "Ivan";
-        int salary = 10000;
-        int department = 1;
+    @ParameterizedTest
+    @MethodSource("parametrs")
+    public void testAddEmployee_ThrowsEmployeeAlreadyAddedException(String family, String name, int salary, int department)
+            throws EmployeeStorageIsFullException {
 
         try {
             employeeService.addEmployee(family, name, salary, department);
@@ -51,13 +56,10 @@ class EmployeeServiceImplTest {
         );
     }
 
-    @Test
-    public void testAddEmployee_ThrowsEmployeeStorageIsFullException() throws EmployeeAlreadyAddedException {
-        String family = "Ivanov";
-        String name = "Ivan";
-        int salary = 10000;
-        int department = 1;
-
+    @ParameterizedTest
+    @MethodSource("parametrs")
+    public void testAddEmployee_ThrowsEmployeeStorageIsFullException(String family, String name, int salary, int department)
+            throws EmployeeAlreadyAddedException {
         EmployeeServiceImpl.sizeArray = 1;
 
         try {
@@ -70,25 +72,20 @@ class EmployeeServiceImplTest {
         );
     }
 
-    @Test
-    public void testDeleteEmployee() throws EmployeeNotFoundException {
-
-        String family = "Ivanov";
-        String name = "Ivan";
-        int salary = 5000;
-        int department = 1;
-
+    @ParameterizedTest
+    @MethodSource("parametrs")
+    public void testDeleteEmployee(String family, String name, int salary, int department)
+            throws EmployeeNotFoundException {
 
         try {
             employeeService.addEmployee(family, name, salary, department);
         } catch (EmployeeAlreadyAddedException | EmployeeStorageIsFullException e) {
             e.printStackTrace();
         }
-
         Employee deletedEmployee = employeeService.deleteEmployee(family, name);
 
-        Assertions.assertEquals(family + " " + name, deletedEmployee.getFullName());
-        //Assertions.assertFalse(employeeService.getEmployees().containsKey(deletedEmployee.getFullName().toLowerCase()));
+        assertEquals((family + " " + name).toLowerCase(), deletedEmployee.getFullName());
+        assertFalse(employeeService.findAll().contains(deletedEmployee.getFullName()));
     }
 
     @Test
@@ -103,14 +100,10 @@ class EmployeeServiceImplTest {
         );
     }
 
-    @Test
-    public void testFindEmployee() throws EmployeeNotFoundException {
-
-        String family = "Ivanov";
-        String name = "Ivan";
-        int salary = 5000;
-        int department = 1;
-
+    @ParameterizedTest
+    @MethodSource("parametrs")
+    public void testFindEmployee(String family, String name, int salary, int department)
+            throws EmployeeNotFoundException {
         try {
             employeeService.addEmployee(family, name, salary, department);
         } catch (EmployeeAlreadyAddedException | EmployeeStorageIsFullException e) {
@@ -119,7 +112,7 @@ class EmployeeServiceImplTest {
 
         Employee foundEmployee = employeeService.findEmployee(family, name);
 
-        Assertions.assertEquals(family + " " + name, foundEmployee.getFullName());
+        assertEquals((family + " " + name).toLowerCase(), foundEmployee.getFullName());
     }
 
     @Test
@@ -134,13 +127,9 @@ class EmployeeServiceImplTest {
         );
     }
 
-    @Test
-    public void testFindAll_Success() {
-
-        String family1 = "Ivanov";
-        String name1 = "Ivan";
-        int salary1 = 5000;
-        int department1 = 1;
+    @ParameterizedTest
+    @MethodSource("parametrs")
+    public void testFindAll_Success(String family1, String name1, int salary1, int department1) {
 
         String family2 = "Petrov";
         String name2 = "Petr";
@@ -157,11 +146,18 @@ class EmployeeServiceImplTest {
 
         Collection<Employee> allEmployees = employeeService.findAll();
 
-        Assertions.assertEquals(2, allEmployees.size());
+        assertEquals(2, allEmployees.size());
         for (Employee employee : allEmployees) {
-            Assertions.assertTrue(employee.getFullName().equals(family1 + " " + name1)
-                    || employee.getFullName().equals(family2 + " " + name2));
+            assertTrue(employee.getFullName().equals((family1 + " " + name1).toLowerCase())
+                    || employee.getFullName().equals((family2 + " " + name2).toLowerCase()));
         }
+    }
+
+    private static Collection<Arguments> parametrs() {
+        return List.of(
+                Arguments.of("Ivanov", "Ivan", 5000, 1)
+
+        );
     }
 }
 

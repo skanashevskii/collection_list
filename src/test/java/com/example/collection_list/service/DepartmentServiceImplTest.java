@@ -20,10 +20,12 @@ import java.util.stream.Collectors;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+
+
+
 @ExtendWith(MockitoExtension.class)
 public class DepartmentServiceImplTest {
     private DepartmentServiceImpl departmentService;
-
     private EmployeeServiceImpl employeeService;
 
     @BeforeEach
@@ -31,17 +33,17 @@ public class DepartmentServiceImplTest {
         employeeService = mock(EmployeeServiceImpl.class);
         departmentService = new DepartmentServiceImpl(employeeService);
 
-    }
-
-    @Test
-    public void max() {
         List<Employee> employees = new ArrayList<>();
         employees.add(new Employee("Ivanov", "Ivan", 9000, 1));
         employees.add(new Employee("Petrov", "Petr", 5000, 4));
         employees.add(new Employee("Goncharov", "Gonchar", 5000, 1));
         employees.add(new Employee("Ivanov", "Ivan", 10000, 1));
-
         Mockito.when(employeeService.findAll()).thenReturn(employees);
+
+    }
+
+    @Test
+    public void max() {
         Employee result = departmentService.max(1);
         assertEquals("Ivan", result.getName());
         assertEquals("Ivanov", result.getFamily());
@@ -52,32 +54,17 @@ public class DepartmentServiceImplTest {
 
     @Test
     public void min() {
-        List<Employee> employees = new ArrayList<>();
-        employees.add(new Employee("Ivanov", "Ivan", 9000, 1));
-        employees.add(new Employee("Petrov", "Petr", 5000, 4));
-        employees.add(new Employee("Goncharov", "Gonchar", 6000, 1));
-        employees.add(new Employee("Ivanov", "Ivan", 10000, 1));
-
-        Mockito.when(employeeService.findAll()).thenReturn(employees);
         Employee result = departmentService.min(1);
         assertEquals("Gonchar", result.getName());
         assertEquals("Goncharov", result.getFamily());
-        assertEquals(6000, result.getSalary());
+        assertEquals(5000, result.getSalary());
         assertEquals(1, result.getDepartment());
         verify(employeeService, times(1)).findAll();
     }
 
     @Test
     public void sumSalaryDept() {
-        List<Employee> employees = new ArrayList<>();
-        employees.add(new Employee("Ivanov", "Ivan", 9000, 1));
-        employees.add(new Employee("Petrov", "Petr", 5000, 4));
-        employees.add(new Employee("Goncharov", "Gonchar", 6000, 1));
-        employees.add(new Employee("Ivanov", "Ivan", 10000, 1));
-
-        Mockito.when(employeeService.findAll()).thenReturn(employees);
-
-        assertEquals(25000, departmentService.sumSalaryDept(1));
+        assertEquals(24000, departmentService.sumSalaryDept(1));
         verify(employeeService, times(1)).findAll();
     }
 
@@ -86,20 +73,18 @@ public class DepartmentServiceImplTest {
         List<Employee> employees = new ArrayList<>();
         employees.add(new Employee("Ivanov", "Ivan", 9000, 1));
         employees.add(new Employee("Petrov", "Petr", 5000, 4));
-        employees.add(new Employee("Goncharov", "Gonchar", 6000, 1));
+        employees.add(new Employee("Goncharov", "Gonchar", 5000, 1));
         employees.add(new Employee("Ivanov", "Ivan", 10000, 1));
 
-        Mockito.when(employeeService.findAll()).thenReturn(employees);
-
         Collection<Employee> result = departmentService.allDept(1);
-
         List<Employee> expected = employees.stream()
                 .filter(employee -> employee.getDepartment() == 1)
                 .toList();
         Assertions.assertEquals(expected.size(), result.size());
         Assertions.assertTrue(result.containsAll(expected));
 
-        //verify(employeeService,times(1));
+        verify(employeeService,times(1)).findAll();
+
 
     }
 
@@ -108,25 +93,25 @@ public class DepartmentServiceImplTest {
         List<Employee> employees = new ArrayList<>();
         employees.add(new Employee("Ivanov", "Ivan", 9000, 1));
         employees.add(new Employee("Petrov", "Petr", 5000, 4));
-        employees.add(new Employee("Goncharov", "Gonchar", 6000, 1));
+        employees.add(new Employee("Goncharov", "Gonchar", 5000, 1));
         employees.add(new Employee("Ivanov", "Ivan", 10000, 1));
 
-        Mockito.when(employeeService.findAll()).thenReturn(employees);
+       //Mockito.when(employeeService.findAll()).thenReturn(employees); -перенесен в setup()
 
         Map<Integer, List<Employee>> result = departmentService.all();
 
         Map<Integer, List<Employee>> expected = employees.stream()
                 .collect(Collectors.groupingBy(Employee::getDepartment));
-        Assertions.assertEquals(expected.size(), result.size());
+        assertEquals(expected.size(), result.size());
         for (int department : expected.keySet()) {
-            Assertions.assertTrue(result.containsKey(department));
+            assertTrue(result.containsKey(department));
             List<Employee> expectedEmployees = expected.get(department);
             List<Employee> resultEmployees = result.get(department);
-            Assertions.assertEquals(expectedEmployees.size(), resultEmployees.size());
+            assertEquals(expectedEmployees.size(), resultEmployees.size());
             Assertions.assertTrue(resultEmployees.containsAll(expectedEmployees));
         }
 
-        //verify(employeeService,times(1).findAll());
+        verify(employeeService,times(1)).findAll();
 
     }
 }
