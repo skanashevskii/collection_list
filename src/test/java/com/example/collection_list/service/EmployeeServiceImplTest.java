@@ -85,7 +85,10 @@ class EmployeeServiceImplTest {
         Employee deletedEmployee = employeeService.deleteEmployee(family, name);
 
         assertEquals((family + " " + name).toLowerCase(), deletedEmployee.getFullName());
-        assertFalse(employeeService.findAll().contains(deletedEmployee.getFullName()));
+        assertFalse(employeeService.findAll().stream()
+                        .anyMatch(employee -> employee.getFullName()
+                                .equalsIgnoreCase(deletedEmployee.getFullName())));
+
     }
 
     @Test
