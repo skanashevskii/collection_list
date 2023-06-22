@@ -11,6 +11,8 @@ public interface DepartmentService {
 
     Employee min(int dept);
 
+    int sumSalaryDept(int dept);
+
     Collection<Employee> allDept(int dept);
 
     Map<Integer, List<Employee>> all();

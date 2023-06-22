@@ -14,9 +14,8 @@ public interface EmployeeService {
 
     Employee deleteEmployee(String family, String name) throws EmployeeNotFoundException;
 
-    Employee findEmployee(String family, String name)throws EmployeeNotFoundException;
+    Employee findEmployee(String family, String name) throws EmployeeNotFoundException;
 
     Collection<Employee> findAll();
-
 
 }

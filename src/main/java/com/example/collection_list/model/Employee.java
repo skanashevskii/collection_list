@@ -36,7 +36,7 @@ public class Employee {
     }
 
     public String getFullName() {
-        return this.family + " " + this.name;
+        return (this.family + " " + this.name).toLowerCase();
     }
 
     public int getSalary() {
@@ -46,6 +46,7 @@ public class Employee {
     public int getDepartment() {
         return department;
     }
+
 
     @Override
     public boolean equals(Object o) {
